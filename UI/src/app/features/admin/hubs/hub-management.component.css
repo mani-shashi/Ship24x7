@@ -1,0 +1,11 @@
+.glass-card {
+  @apply bg-white/70 dark:bg-primary-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-3xl transition-all duration-300;
+}
+
+.data-label {
+  @apply text-[10px] font-bold text-slate-400 dark:text-primary-800 uppercase tracking-[0.2em];
+}
+
+.btn-primary {
+  @apply bg-accent-gold hover:bg-emerald-600 text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-emerald-500/20;
+}

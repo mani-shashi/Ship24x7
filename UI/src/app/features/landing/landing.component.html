@@ -1,0 +1,406 @@
+<div class="min-h-screen transition-colors duration-500 overflow-x-hidden">
+  <app-navbar />
+
+  <!-- Hero Section -->
+  <section class="relative pt-44 pb-32 md:pt-56 md:pb-32 px-6">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_2px_2px,rgba(0,0,0,0.02)_1px,transparent_0)] bg-[size:40px_40px] pointer-events-none"></div>
+    
+    <!-- Animated Background Elements -->
+    <div class="glass-blob top-0 -left-4 w-72 h-72 bg-accent-gold/10"></div>
+    <div class="glass-blob -bottom-8 left-20 w-72 h-72 bg-emerald-500/10 animation-delay-4000"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+      <div class="animate-fade-up">
+        <span class="px-4 py-1.5 bg-accent-gold/10 border border-accent-gold/20 text-accent-gold rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-8 inline-block">
+          Logistics Intelligence v4.0
+        </span>
+        <h1 class="text-[clamp(3.5rem,8vw,6rem)] font-display font-black leading-[0.85] tracking-tighter text-slate-900 dark:text-white mb-10 uppercase">
+          Ship with <br/>
+          <span class="text-accent-gold">Precision</span>
+        </h1>
+        <p class="text-xl text-slate-600 dark:text-primary-700 max-w-xl leading-relaxed mb-12">
+          The world's most advanced logistics orchestration platform. From hyperlocal last-mile delivery to cross-border freight, we move your world with AI-powered precision.
+        </p>
+        <div class="flex flex-wrap gap-6">
+          <a routerLink="/login" class="btn-primary h-16 px-10 text-base group shadow-neon">
+            Start Shipping <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </a>
+          <a routerLink="/track" class="btn-secondary h-16 px-10 text-base">
+            Track Package
+          </a>
+        </div>
+      </div>
+
+        <div class="relative lg:h-[600px] animate-fade-up animation-delay-600 group">
+           <div class="absolute inset-0 glass-card tech-border overflow-hidden rotate-1 hover:rotate-0 transition-transform duration-1000 bg-slate-50 dark:bg-slate-950 shadow-[0_0_50px_rgba(251,191,36,0.05)]">
+              <!-- Holographic Data Particles -->
+              <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-100">
+                 <div class="data-particle top-1/4 left-1/4 bg-accent-gold"></div>
+                 <div class="data-particle top-3/4 right-1/4 bg-emerald-500 animation-delay-2000"></div>
+              </div>
+
+              <!-- Isometric Holographic Plane SVG -->
+              <svg viewBox="0 0 800 600" class="w-full h-full opacity-90 dark:opacity-80 scale-110 group-hover:scale-100 transition-transform duration-1000">
+                 <defs>
+                    <linearGradient id="hologram-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                       <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.8" />
+                       <stop offset="50%" style="stop-color:#10b981;stop-opacity:0.4" />
+                       <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:0.8" />
+                    </linearGradient>
+                 </defs>
+                 
+                 <!-- Holographic Scanline -->
+                 <rect x="0" y="0" width="800" height="2" fill="#fbbf24" class="animate-[scan_4s_ease-in-out_infinite] opacity-50 shadow-[0_0_15px_#fbbf24]" />
+                 
+                 <!-- Isometric Plane Body -->
+                 <g class="animate-float">
+                    <!-- Fuselage Top -->
+                    <path d="M200 300 L600 200 L650 220 L250 320 Z" fill="rgba(251,191,36,0.05)" stroke="#fbbf24" stroke-width="1.5" />
+                    <!-- Fuselage Side -->
+                    <path d="M200 300 L250 320 L250 360 L200 340 Z" fill="rgba(16,185,129,0.05)" stroke="#10b981" stroke-width="1.5" />
+                    <!-- Wing Detail -->
+                    <path d="M400 250 L550 150 L600 150 L450 237" fill="none" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5 5" opacity="0.3" />
+                 </g>
+              </svg>
+
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-50 dark:from-slate-950 via-transparent to-transparent"></div>
+              
+              <!-- Live Telemetry Overlay -->
+              <div class="absolute bottom-8 left-8 flex gap-8 animate-fade-up">
+                 <div class="space-y-1">
+                    <p class="text-[8px] text-accent-gold uppercase font-black">Velocity</p>
+                    <p class="text-xl font-mono text-slate-900 dark:text-white">842 <span class="text-[10px]">KM/H</span></p>
+                 </div>
+                 <div class="space-y-1">
+                    <p class="text-[8px] text-emerald-500 uppercase font-black">Altitude</p>
+                    <p class="text-xl font-mono text-slate-900 dark:text-white">32K <span class="text-[10px]">FT</span></p>
+                 </div>
+              </div>
+
+              <div class="absolute top-6 right-6 p-4 glass-card border-accent-gold/30 backdrop-blur-xl">
+                 <p class="data-label text-accent-gold">Hologram v2.1</p>
+                 <p class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-tighter">Diagnostic <span class="text-emerald-500">98%</span></p>
+              </div>
+           </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-32 px-6 relative">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="glass-card tech-border p-8 hover:border-accent-gold/40 hover:-translate-y-2 transition-all duration-500 group cursor-pointer">
+          <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all duration-500">
+            <span class="material-symbols-outlined text-emerald-500">inventory_2</span>
+          </div>
+          <h3 class="text-lg font-display font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-tight">Bulk Freight</h3>
+          <p class="text-slate-600 dark:text-primary-700 text-sm leading-relaxed">
+            Full container (FCL) and partial load (LCL) solutions across sea and air routes with full customs support.
+          </p>
+        </div>
+
+        <div class="glass-card tech-border p-8 hover:border-accent-gold/40 hover:-translate-y-2 transition-all duration-500 group cursor-pointer">
+          <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all duration-500">
+            <span class="material-symbols-outlined text-emerald-500">ac_unit</span>
+          </div>
+          <h3 class="text-lg font-display font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-tight">Cold Chain</h3>
+          <p class="text-slate-600 dark:text-primary-700 text-sm leading-relaxed">
+            Temperature-controlled logistics for pharmaceuticals and perishables with real-time thermal telemetry.
+          </p>
+        </div>
+
+        <div class="glass-card tech-border p-8 hover:border-accent-gold/40 hover:-translate-y-2 transition-all duration-500 group cursor-pointer">
+          <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all duration-500">
+            <span class="material-symbols-outlined text-emerald-500">shopping_cart</span>
+          </div>
+          <h3 class="text-lg font-display font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-tight">E-com Sync</h3>
+          <p class="text-slate-600 dark:text-primary-700 text-sm leading-relaxed">
+            Seamless API integration for Shopify, Amazon, and custom stores with automated fulfillment.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section id="stats" class="py-32 px-6 bg-slate-50 dark:bg-primary-950/20">
+    <div class="max-w-7xl mx-auto border-y border-emerald-100 dark:border-white/5 py-24 flex flex-wrap justify-between gap-12">
+        <div class="min-w-[200px]">
+          <p class="text-[clamp(3.5rem,8vw,5.5rem)] font-display font-bold text-slate-900 dark:text-white tracking-tighter leading-none mb-4">99.9<span class="text-accent-gold">%</span></p>
+          <p class="data-label italic">SLA Compliance</p>
+        </div>
+        <div class="min-w-[200px]">
+          <p class="text-[clamp(3.5rem,8vw,5.5rem)] font-display font-bold text-slate-900 dark:text-white tracking-tighter leading-none mb-4">1.2<span class="text-accent-gold">M</span></p>
+          <p class="data-label italic">TEU Moved Annually</p>
+        </div>
+        <div class="min-w-[200px]">
+          <p class="text-[clamp(3.5rem,8vw,5.5rem)] font-display font-bold text-slate-900 dark:text-white tracking-tighter leading-none mb-4">120<span class="text-accent-gold">+</span></p>
+          <p class="data-label italic">Global Hubs</p>
+        </div>
+    </div>
+  </section>
+
+  <!-- Operations Excellence -->
+  <section class="py-32 px-6 relative overflow-hidden">
+     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div class="order-2 lg:order-1 relative group">
+           <div class="glass-card tech-border overflow-hidden rounded-[2.5rem] bg-slate-50 dark:bg-slate-950 h-[500px] flex items-center justify-center relative">
+              <!-- Holographic Sorting Matrix SVG -->
+              <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05)_0%,transparent_70%)] animate-pulse"></div>
+              
+              <svg viewBox="0 0 800 600" class="w-full h-full opacity-70 dark:opacity-60 scale-110 group-hover:scale-100 transition-transform duration-1000">
+                 <!-- Isometric Grid -->
+                 <g transform="skewX(-20) rotate(-10) translate(100, 100)">
+                    <path d="M0 0 L400 0 L400 400 L0 400 Z" fill="none" stroke="rgba(251,191,36,0.1)" stroke-width="1" />
+                    <!-- Grid Lines -->
+                    <path d="M0 100 L400 100 M0 200 L400 200 M0 300 L400 300" stroke="rgba(15,23,42,0.05)" stroke-width="1" class="dark:stroke-white/5" />
+                    <path d="M100 0 L100 400 M200 0 L200 400 M300 0 L300 400" stroke="rgba(15,23,42,0.05)" stroke-width="1" class="dark:stroke-white/5" />
+                    
+                    <!-- Kinetic Data Packets -->
+                    <rect x="0" y="100" width="20" height="20" fill="#fbbf24" opacity="0.6">
+                       <animate attributeName="x" from="0" to="400" dur="3s" repeatCount="indefinite" />
+                    </rect>
+                    <rect x="200" y="0" width="20" height="20" fill="#10b981" opacity="0.6">
+                       <animate attributeName="y" from="0" to="400" dur="4s" repeatCount="indefinite" />
+                    </rect>
+                 </g>
+                 
+                 <!-- Scanning Beam -->
+                 <rect x="0" y="0" width="800" height="4" fill="#10b981" class="animate-[scan_6s_ease-in-out_infinite] opacity-30 shadow-[0_0_20px_#10b981]" />
+              </svg>
+
+              <div class="absolute inset-0 bg-gradient-to-tr from-slate-50 dark:from-slate-950 via-transparent to-transparent"></div>
+           </div>
+           
+           <!-- Active Hub Telemetry -->
+           <div class="absolute bottom-10 right-10 p-6 glass-card border-accent-gold/30 backdrop-blur-xl animate-fade-up">
+              <div class="flex items-center gap-3 mb-4">
+                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                 <p class="data-label text-accent-gold">Hub-X Engine</p>
+              </div>
+              <p class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-widest">Load Balancing: <span class="text-emerald-500">OPTIMAL</span></p>
+           </div>
+        </div>
+        <div class="order-1 lg:order-2">
+           <p class="data-label text-accent-gold mb-4">Operational Excellence</p>
+           <h2 class="text-6xl font-display font-black text-slate-900 dark:text-white uppercase tracking-tighter mb-8 leading-[0.9]">AUTOMATED <br/><span class="text-accent-gold">ORCHESTRATION</span></h2>
+           <p class="text-xl text-slate-500 dark:text-primary-700 leading-relaxed mb-10">
+              Our fulfillment centers utilize proprietary AI-mesh networks to orchestrate robotic sorting with sub-second latency. Every package is treated as a high-value data point in our global supply chain.
+           </p>
+           <ul class="space-y-4">
+              <li class="flex items-center gap-4 text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">
+                 <span class="w-1.5 h-1.5 rounded-full bg-accent-gold"></span> 99.98% Sorting Accuracy
+              </li>
+              <li class="flex items-center gap-4 text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">
+                 <span class="w-1.5 h-1.5 rounded-full bg-accent-gold"></span> Zero-human contact fulfillment
+              </li>
+              <li class="flex items-center gap-4 text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">
+                 <span class="w-1.5 h-1.5 rounded-full bg-accent-gold"></span> 100% Solar-powered facilities
+              </li>
+           </ul>
+        </div>
+     </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="py-32 px-6 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+       <div class="text-center mb-24">
+          <p class="data-label text-accent-gold mb-4">Operational Workflow</p>
+          <h2 class="text-5xl font-display font-bold text-slate-900 dark:text-white uppercase tracking-tighter">HOW WE MOVE YOUR WORLD</h2>
+       </div>
+       
+       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
+          <!-- Step 1 -->
+          <div class="relative z-10 text-center group">
+             <div class="w-20 h-20 bg-white dark:bg-primary-900 rounded-3xl border border-slate-200 dark:border-white/5 flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:shadow-neon transition-all">
+                <span class="material-symbols-outlined text-accent-gold text-3xl">touch_app</span>
+             </div>
+             <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4">1. Digital Booking</h4>
+             <p class="text-[10px] text-slate-500 dark:text-primary-700 leading-relaxed px-4">API-first orchestration for instant labels and manifest generation.</p>
+          </div>
+          <!-- Step 2 -->
+          <div class="relative z-10 text-center group">
+             <div class="w-20 h-20 bg-white dark:bg-primary-900 rounded-3xl border border-slate-200 dark:border-white/5 flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:shadow-neon transition-all">
+                <span class="material-symbols-outlined text-accent-gold text-3xl">precision_manufacturing</span>
+             </div>
+             <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4">2. Smart Sorting</h4>
+             <p class="text-[10px] text-slate-500 dark:text-primary-700 leading-relaxed px-4">AI-powered hub routing minimizing transit overhead and carbon footprint.</p>
+          </div>
+          <!-- Step 3 -->
+          <div class="relative z-10 text-center group">
+             <div class="w-20 h-20 bg-white dark:bg-primary-900 rounded-3xl border border-slate-200 dark:border-white/5 flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:shadow-neon transition-all">
+                <span class="material-symbols-outlined text-accent-gold text-3xl">satellite_alt</span>
+             </div>
+             <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4">3. Global Transit</h4>
+             <p class="text-[10px] text-slate-500 dark:text-primary-700 leading-relaxed px-4">Real-time telemetry tracking with live geospatial vessel monitoring.</p>
+          </div>
+          <!-- Step 4 -->
+          <div class="relative z-10 text-center group">
+             <div class="w-20 h-20 bg-white dark:bg-primary-900 rounded-3xl border border-slate-200 dark:border-white/5 flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:shadow-neon transition-all">
+                <span class="material-symbols-outlined text-accent-gold text-3xl">verified</span>
+             </div>
+             <h4 class="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white mb-4">4. Final Dispatch</h4>
+             <p class="text-[10px] text-slate-500 dark:text-primary-700 leading-relaxed px-4">Localized last-mile delivery with signature verification and safety scores.</p>
+          </div>
+          
+          <!-- Line Decor -->
+          <div class="hidden md:block absolute top-10 left-0 w-full h-px bg-slate-100 dark:bg-white/5 -z-0 overflow-hidden">
+             <div class="data-stream"></div>
+          </div>
+       </div>
+    </div>
+  </section>
+
+  <!-- Global Reach -->
+  <section id="security" class="py-32 px-6 bg-white dark:bg-primary-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors duration-500">
+    <div class="absolute inset-0 opacity-[0.03] dark:opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+    <div class="scanline opacity-5 dark:opacity-20"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+       <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div>
+             <p class="data-label text-accent-gold mb-4">Strategic Network</p>
+             <h2 class="text-6xl font-display font-bold uppercase tracking-tighter mb-8 text-slate-900 dark:text-white">GLOBAL HUB INFRASTRUCTURE</h2>
+             <p class="text-slate-500 dark:text-primary-700 text-lg leading-relaxed mb-12">
+                We operate through 120+ strategic nodes across 6 continents. Our primary terminals are equipped with automated sorting and real-time telemetry integration.
+             </p>
+             
+             <div class="space-y-6">
+                <div class="flex items-center gap-6 p-6 border border-slate-100 dark:border-white/5 rounded-2xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors group">
+                   <div class="w-12 h-12 bg-accent-gold/20 rounded-xl flex items-center justify-center text-accent-gold group-hover:scale-110 transition-transform">
+                      <span class="material-symbols-outlined">hub</span>
+                   </div>
+                   <div>
+                      <h4 class="font-bold uppercase tracking-widest text-sm text-slate-900 dark:text-white">Mumbai Terminal (BOM-01)</h4>
+                      <p class="text-[10px] text-slate-400 dark:text-white/40 uppercase">South Asia Operations Center • 24/7 Clearance</p>
+                   </div>
+                </div>
+                <div class="flex items-center gap-6 p-6 border border-slate-100 dark:border-white/5 rounded-2xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors group">
+                   <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
+                      <span class="material-symbols-outlined">flight_takeoff</span>
+                   </div>
+                   <div>
+                      <h4 class="font-bold uppercase tracking-widest text-sm text-slate-900 dark:text-white">Dubai Logistics City (DXB-04)</h4>
+                      <p class="text-[10px] text-slate-400 dark:text-white/40 uppercase">MENA Region Gateway • Duty-Free Processing</p>
+                   </div>
+                </div>
+                <div class="flex items-center gap-6 p-6 border border-slate-100 dark:border-white/5 rounded-2xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors group">
+                   <div class="w-12 h-12 bg-accent-gold/20 rounded-xl flex items-center justify-center text-accent-gold group-hover:scale-110 transition-transform">
+                      <span class="material-symbols-outlined">directions_boat</span>
+                   </div>
+                   <div>
+                      <h4 class="font-bold uppercase tracking-widest text-sm text-slate-900 dark:text-white">Singapore Changi Hub (SIN-02)</h4>
+                      <p class="text-[10px] text-slate-400 dark:text-white/40 uppercase">APAC Maritime & Air Gateway • 99.9% Efficiency</p>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="relative group">
+             <!-- Holographic Rotating Globe SVG -->
+             <div class="aspect-square glass-card tech-border overflow-hidden bg-slate-50 dark:bg-slate-950 group-hover:border-accent-gold/50 transition-all duration-700 relative">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.05)_0%,transparent_70%)] animate-pulse"></div>
+                
+                <svg viewBox="0 0 800 800" class="w-full h-full opacity-70 dark:opacity-60 scale-90 group-hover:scale-100 transition-transform duration-1000">
+                   <!-- Outer Rings -->
+                   <circle cx="400" cy="400" r="350" fill="none" stroke="rgba(15,23,42,0.1)" stroke-width="1" stroke-dasharray="10 5" class="animate-[spin_60s_linear_infinite] dark:stroke-accent-gold/10" />
+                   
+                   <!-- Globe Main Body -->
+                   <g class="animate-[spin_30s_linear_infinite]">
+                      <path d="M400 100 C 565 100, 700 235, 700 400 S 565 700, 400 700 S 100 565, 100 400 S 235 100, 400 100" fill="none" stroke="rgba(15,23,42,0.2)" stroke-width="0.5" class="dark:stroke-accent-gold/30" />
+                      <!-- Enterprise Nodes -->
+                      <circle cx="400" cy="150" r="4" fill="#fbbf24" class="animate-pulse" />
+                      <circle cx="600" cy="400" r="4" fill="#10b981" class="animate-pulse" />
+                   </g>
+                </svg>
+
+                <div class="scanline"></div>
+                <div class="absolute inset-0 bg-gradient-to-tr from-slate-50 dark:from-slate-950 via-transparent to-transparent"></div>
+             </div>
+             
+             <!-- Floating Geospatial Stats -->
+             <div class="absolute -top-6 -left-6 glass-card tech-border p-5 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl animate-float">
+                <p class="text-[8px] text-accent-gold uppercase font-black mb-1">Global Mesh</p>
+                <p class="text-2xl font-mono font-bold text-slate-900 dark:text-white">ACTIVE</p>
+             </div>
+             <div class="absolute -bottom-6 -right-6 glass-card tech-border p-5 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl animate-float animation-delay-2000">
+                <p class="text-[8px] text-emerald-500 uppercase font-black mb-1">Node Integrity</p>
+                <p class="text-2xl font-mono font-bold text-slate-900 dark:text-white">99.98%</p>
+             </div>
+          </div>
+       </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-48 px-6 text-center relative overflow-hidden bg-accent-gold/[0.02]">
+    <div class="absolute inset-0 bg-accent-gold/5 blur-[80px] rounded-full scale-150 pointer-events-none"></div>
+    <div class="max-w-4xl mx-auto relative z-10">
+      <h2 class="text-6xl md:text-8xl font-display font-bold text-slate-900 dark:text-white tracking-tighter mb-12 uppercase leading-none">
+        Ready to <span class="text-accent-gold">Scale</span> Your Business?
+      </h2>
+      <p class="text-2xl text-slate-600 mb-16 font-medium">
+        Join thousands of businesses sending with Ship24X7.
+      </p>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+        <a routerLink="/login" class="btn-primary h-20 px-16 text-xl group w-full md:w-auto">
+          Get Started Now <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </a>
+        <a routerLink="/track" class="btn-secondary h-20 px-16 text-xl w-full md:w-auto">
+          Track a Package
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-emerald-100 dark:border-white/5 py-20 px-6 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-20">
+      <div class="md:col-span-6">
+        <div class="flex items-center gap-2 mb-10">
+          <div class="w-12 h-12 bg-accent-gold/10 rounded-xl flex items-center justify-center border border-accent-gold/20 shadow-neon">
+            <span class="material-symbols-outlined text-accent-gold text-2xl">local_shipping</span>
+          </div>
+          <span class="text-3xl font-display font-bold tracking-tighter text-slate-900 dark:text-white">Ship<span class="text-accent-gold">24<span class="text-sm lowercase opacity-70 mx-0.5">x</span>7</span><sup class="text-[12px] ml-0.5 text-accent-gold/60">TM</sup></span>
+        </div>
+        <p class="text-lg text-slate-500 dark:text-primary-700 max-w-sm mb-12">
+          The modern way to ship. Fast, reliable, and built for everyone.
+        </p>
+        <div class="flex gap-6">
+           <a routerLink="/network" class="p-3 bg-white/50 dark:bg-white/5 rounded-xl hover:text-accent-gold transition-colors cursor-pointer" title="Global Network"><span class="material-symbols-outlined">public</span></a>
+           <a routerLink="/impact" class="p-3 bg-white/50 dark:bg-white/5 rounded-xl hover:text-accent-gold transition-colors cursor-pointer" title="Sustainability"><span class="material-symbols-outlined">bar_chart</span></a>
+           <a routerLink="/tech" class="p-3 bg-white/50 dark:bg-white/5 rounded-xl hover:text-accent-gold transition-colors cursor-pointer" title="Logistics Tech"><span class="material-symbols-outlined">inventory_2</span></a>
+        </div>
+      </div>
+
+      <div class="md:col-span-3">
+         <h4 class="data-label text-accent-gold mb-8">Navigation</h4>
+         <ul class="space-y-4">
+            <li><a routerLink="/" class="text-slate-600 dark:text-primary-700 hover:text-slate-900 dark:hover:text-white transition-colors">Home</a></li>
+            <li><a routerLink="/track" class="text-slate-600 dark:text-primary-700 hover:text-slate-900 dark:hover:text-white transition-colors">Track Package</a></li>
+            <li><a routerLink="/login" class="text-slate-600 dark:text-primary-700 hover:text-slate-900 dark:hover:text-white transition-colors">Log In</a></li>
+            <li><a routerLink="/contact" class="text-slate-600 dark:text-primary-700 hover:text-slate-900 dark:hover:text-white transition-colors">Contact Us</a></li>
+         </ul>
+      </div>
+
+      <div class="md:col-span-3">
+         <h4 class="data-label text-accent-gold mb-8">Resources</h4>
+         <ul class="space-y-4">
+            <li><a routerLink="/rates" class="text-slate-600 dark:text-primary-700 hover:text-slate-900 dark:hover:text-white transition-colors">Shipping Rates</a></li>
+            <li><a routerLink="/prohibited" class="text-slate-600 dark:text-primary-700 hover:text-slate-900 dark:hover:text-white transition-colors">Prohibited Items</a></li>
+            <li><a routerLink="/privacy" class="text-slate-600 dark:text-primary-700 hover:text-slate-900 dark:hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a routerLink="/safety" class="text-slate-600 dark:text-primary-700 hover:text-slate-900 dark:hover:text-white transition-colors">Safety Protocols</a></li>
+         </ul>
+      </div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto mt-32 pt-10 border-t border-emerald-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+       <p class="font-mono text-[10px] text-slate-400 dark:text-primary-800 uppercase tracking-widest">© 2026 Ship24<span class="lowercase">x</span>7™ LOGISTICS. DISPATCHED WITH CARE.</p>
+       <div class="flex items-center gap-4 px-3 py-1 bg-white/50 dark:bg-white/5 border border-emerald-100 dark:border-white/5 rounded font-mono text-[9px] text-slate-400">
+         <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></div>
+         NETWORK STATUS: OPERATIONAL
+       </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,7 @@
+<Project>
+  <Target Name="EnforceNoSharedProjectReference" BeforeTargets="Build">
+    <Error
+      Condition="'@(ProjectReference)' != '' and $([System.String]::new('%(ProjectReference.Identity)').Contains('Ship24X7.Shared'))"
+      Text="Direct ProjectReference to Ship24X7.Shared is not permitted. Use PackageReference instead." />
+  </Target>
+</Project>

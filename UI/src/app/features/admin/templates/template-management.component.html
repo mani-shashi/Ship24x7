@@ -1,0 +1,181 @@
+<div class="min-h-screen bg-slate-50 dark:bg-primary-950 p-6 md:p-12 font-sans overflow-x-hidden transition-colors duration-300">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <header class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div>
+        <div class="flex items-center gap-4 mb-4">
+           <button routerLink="/admin" class="w-10 h-10 glass-card flex items-center justify-center hover:text-accent-gold transition-colors">
+              <span class="material-symbols-outlined text-sm">arrow_back</span>
+           </button>
+           <h1 class="text-4xl font-display font-black text-slate-900 dark:text-white uppercase tracking-tighter">
+             Message <span class="text-accent-gold">Templates</span>
+           </h1>
+        </div>
+        <p class="data-label">Customizing {{ templates().length }} Transactional Touchpoints</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <button (click)="openCreateModal()" class="btn-primary px-6 py-3 flex items-center gap-2">
+           <span class="material-symbols-outlined text-sm">add_comment</span>
+           <span>New Template</span>
+        </button>
+        <button (click)="store.toggleTheme()" class="p-3 glass-card hover:border-accent-gold/40 flex items-center justify-center">
+          @if (store.theme() === 'dark') { <span class="material-symbols-outlined text-accent-gold">light_mode</span> }
+          @else { <span class="material-symbols-outlined text-slate-600">dark_mode</span> }
+        </button>
+      </div>
+    </header>
+
+    <!-- Templates Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      @for (template of templates(); track template.id) {
+        <div class="glass-card group hover:border-accent-gold/30 transition-all p-8 flex flex-col h-full bg-white dark:bg-primary-900/40 relative">
+           <div class="flex justify-between items-start mb-6">
+              <div class="w-12 h-12 bg-accent-gold/10 rounded-2xl flex items-center justify-center text-accent-gold border border-accent-gold/20 shadow-sm">
+                 @if (template.type === 'Email') { <span class="material-symbols-outlined">mail</span> }
+                 @else if (template.type === 'SMS') { <span class="material-symbols-outlined">sms</span> }
+                 @else { <span class="material-symbols-outlined">notifications</span> }
+              </div>
+              <span class="px-3 py-1 bg-slate-50 dark:bg-primary-950/50 rounded-lg text-[9px] font-black uppercase tracking-widest text-slate-500 border border-slate-100 dark:border-white/5">
+                 {{ template.type }} Channel
+              </span>
+           </div>
+
+           <div class="flex-grow">
+              <h3 class="text-xl font-display font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2">{{ template.name }}</h3>
+              <p class="text-xs font-medium text-slate-400 mb-6">Last modified: {{ template.lastModified | date:'mediumDate' }}</p>
+              
+              <div class="p-4 bg-slate-100/50 dark:bg-primary-950/30 rounded-2xl border border-slate-100 dark:border-white/5">
+                 <p class="data-label text-[8px] mb-3">Live Dynamic Preview (Simulated)</p>
+                 <pre class="text-[10px] font-mono leading-relaxed text-slate-600 dark:text-slate-300 whitespace-pre-wrap font-semibold">{{ getResolvedPreview(template) }}</pre>
+              </div>
+           </div>
+
+           <div class="mt-8 flex gap-3">
+              <button 
+                (click)="openEditModal(template)"
+                class="flex-grow py-3 border-2 border-slate-100 dark:border-white/5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-accent-gold/40 hover:text-accent-gold transition-all"
+              >
+                 Edit Template
+              </button>
+              <button 
+                (click)="deleteTemplate(template.id, template.name)"
+                class="w-12 h-12 flex items-center justify-center border-2 border-slate-100 dark:border-white/5 rounded-xl text-slate-400 hover:text-red-500 hover:border-red-500/30 transition-all"
+              >
+                 <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+           </div>
+        </div>
+      }
+      @if (templates().length === 0) {
+        <div class="col-span-2 text-center p-12 glass-card">
+          <span class="material-symbols-outlined text-3xl text-slate-400 mb-4">forum</span>
+          <p class="text-slate-400 italic text-xs uppercase tracking-widest">No notification templates found. Click "New Template" to start.</p>
+        </div>
+      }
+    </div>
+
+    <!-- Info Box -->
+    <div class="mt-12 p-6 glass-card border-dashed border-2 border-slate-200 dark:border-white/5 opacity-70">
+       <div class="flex items-center gap-4">
+          <span class="material-symbols-outlined text-accent-gold">variable_insert</span>
+          <p class="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">
+            Template Syntax: Use <span class="text-accent-gold">`{{ '{{' }}trackingNumber{{ '}}' }}`</span>, <span class="text-accent-gold">`{{ '{{' }}customerName{{ '}}' }}`</span> or <span class="text-accent-gold">`{{ '{{' }}hubLocation{{ '}}' }}`</span> for dynamic real-time values.
+          </p>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Premium Communication Template Editor Modal -->
+@if (isModalOpen() && selectedTemplate()) {
+  <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md flex items-center justify-center z-[1000] p-4 animate-fade-in">
+    <div class="glass-card tech-border max-w-2xl w-full p-8 relative overflow-hidden bg-white/95 dark:bg-primary-950/95 shadow-2xl animate-scale-up">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-6 border-b border-slate-100 dark:border-white/5 mb-8">
+        <div>
+          <span class="text-[8px] font-black uppercase tracking-[0.2em] text-accent-gold">Comm Dispatch Desk</span>
+          <h3 class="text-2xl font-display font-black text-slate-900 dark:text-white uppercase tracking-tight mt-1">
+            {{ isEditMode() ? 'Configure Template' : 'New Template Layout' }}
+          </h3>
+        </div>
+        <button (click)="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="space-y-6">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="data-label block mb-2">Template Label *</label>
+            <input 
+              type="text" 
+              [(ngModel)]="selectedTemplate()!.name"
+              placeholder="e.g. Shipment Dispatch Alert"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white"
+            />
+          </div>
+          <div>
+            <label class="data-label block mb-2">Delivery Channel *</label>
+            <select 
+              [(ngModel)]="selectedTemplate()!.type"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white"
+            >
+              <option value="Email">Email Notification</option>
+              <option value="SMS">SMS Message</option>
+              <option value="App">In-App Alert</option>
+            </select>
+          </div>
+        </div>
+
+        @if (selectedTemplate()!.type === 'Email') {
+          <div>
+            <label class="data-label block mb-2">Email Subject *</label>
+            <input 
+              type="text" 
+              [(ngModel)]="selectedTemplate()!.subject"
+              placeholder="e.g. Your shipment #{{ '{{' }}trackingNumber{{ '}}' }} is on its way!"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white"
+            />
+          </div>
+        }
+
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="data-label">Body Content *</label>
+            <span class="text-[9px] font-mono text-slate-400">Syntax: {{ '{{' }}variable{{ '}}' }} allowed</span>
+          </div>
+          <textarea 
+            [(ngModel)]="selectedTemplate()!.content"
+            rows="6"
+            placeholder="Write template body here..."
+            class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white font-mono"
+          ></textarea>
+        </div>
+
+        <!-- Live Preview inside Modal -->
+        <div class="p-4 bg-slate-100 dark:bg-primary-950 border border-slate-200 dark:border-white/5 rounded-2xl">
+          <p class="data-label text-[8px] mb-2 text-accent-gold">Resolved Real-time Parser Output Preview</p>
+          <pre class="text-[10px] font-mono leading-relaxed text-slate-600 dark:text-slate-300 whitespace-pre-wrap italic">{{ getResolvedPreview(selectedTemplate()) }}</pre>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-8 flex items-center justify-end gap-4 border-t border-slate-100 dark:border-white/5 pt-6">
+        <button 
+          (click)="closeModal()" 
+          class="px-6 py-3 border border-slate-200 dark:border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-white/5 transition-all text-slate-500 dark:text-white"
+        >
+          Cancel
+        </button>
+        <button 
+          (click)="saveTemplate()" 
+          class="btn-primary px-8 h-[44px]"
+        >
+          Deploy Template
+        </button>
+      </div>
+    </div>
+  </div>
+}

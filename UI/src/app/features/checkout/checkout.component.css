@@ -1,0 +1,27 @@
+.glass-card {
+  @apply bg-white/70 dark:bg-primary-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-3xl transition-all duration-300;
+}
+
+.shadow-neon {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.tech-border {
+  @apply border-2 border-slate-100 dark:border-white/5;
+}
+
+.data-label {
+  @apply text-[10px] font-bold text-slate-400 dark:text-primary-800 uppercase tracking-[0.2em];
+}
+
+.input-field {
+  @apply w-full bg-slate-100/50 dark:bg-primary-950/30 border border-slate-200 dark:border-white/5 rounded-2xl px-6 py-4 text-slate-900 dark:text-white focus:ring-2 focus:ring-accent-gold/20 focus:border-accent-gold/40 transition-all outline-none;
+}
+
+.btn-primary {
+  @apply bg-accent-gold hover:bg-emerald-600 text-white font-bold rounded-2xl transition-all active:scale-95 shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.btn-ghost {
+  @apply text-slate-500 hover:bg-slate-100 dark:hover:bg-white/5 rounded-2xl transition-all font-bold;
+}

@@ -1,0 +1,300 @@
+<div class="flex flex-col min-h-screen overflow-hidden transition-colors duration-300">
+  <!-- Top Navigation Header -->
+  <header class="bg-white/80 dark:bg-primary-950/80 backdrop-blur-md border-b border-slate-200 dark:border-white/5 sticky top-0 z-50 px-10 py-4 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-3 cursor-pointer" routerLink="/">
+          <div class="w-10 h-10 bg-accent-gold/10 rounded-xl flex items-center justify-center border border-accent-gold/30 shadow-neon">
+            <span class="material-symbols-outlined text-accent-gold">local_shipping</span>
+          </div>
+          <span class="text-xl font-display font-bold text-slate-900 dark:text-white tracking-tight uppercase">Ship<span class="text-accent-gold">24<span class="text-sm lowercase opacity-70 mx-0.5">x</span>7</span><sup class="text-[8px] ml-0.5 text-accent-gold/60">TM</sup></span>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-2">
+          <button class="nav-item group" routerLink="/dashboard">
+            <span class="material-symbols-outlined text-sm">dashboard</span>
+            <span>Overview</span>
+          </button>
+          <button class="nav-item group" routerLink="/shipments">
+            <span class="material-symbols-outlined text-sm">inventory_2</span>
+            <span>My Shipments</span>
+          </button>
+          <button class="nav-item active group" routerLink="/track">
+            <span class="material-symbols-outlined text-sm">search</span>
+            <span>Track Package</span>
+          </button>
+          <button class="nav-item group" routerLink="/address-book">
+            <span class="material-symbols-outlined text-sm">contact_page</span>
+            <span>Address Book</span>
+          </button>
+          <button class="nav-item group" routerLink="/settings">
+            <span class="material-symbols-outlined text-sm">settings</span>
+            <span>Settings</span>
+          </button>
+          @if (store.isAdmin()) {
+            <button class="nav-item group border-l border-slate-200 dark:border-white/10 ml-2 pl-4" routerLink="/admin">
+              <span class="material-symbols-outlined text-sm text-accent-gold">admin_panel_settings</span>
+              <span class="text-accent-gold">Admin Console</span>
+            </button>
+          }
+        </nav>
+
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button 
+          (click)="store.toggleTheme()"
+          class="p-3 glass-card hover:border-accent-gold/40 group relative overflow-hidden flex items-center justify-center"
+        >
+          @if (store.theme() === 'dark') {
+            <span class="material-symbols-outlined text-accent-gold">light_mode</span>
+          } @else {
+            <span class="material-symbols-outlined text-slate-600">dark_mode</span>
+          }
+        </button>
+        <button routerLink="/dashboard" class="group text-slate-500 hover:text-accent-gold flex items-center gap-2 transition-colors font-bold uppercase tracking-widest text-[10px]">
+          Back to Dashboard <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-1 overflow-y-auto p-6 md:p-12 relative scroll-smooth">
+    <div class="max-w-6xl mx-auto pt-10 relative">
+      <header class="text-center mb-16">
+        <div class="inline-flex items-center gap-4 px-4 py-2 bg-slate-100 dark:bg-primary-900/50 border border-slate-200 dark:border-white/5 rounded-xl mb-8 group overflow-hidden relative">
+          <div class="absolute inset-0 bg-accent-gold/5 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          @if (result() && !isSearching()) {
+            <span class="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-emerald-500/80">Satellite link established. Connected.</span>
+          } @else {
+            <span class="material-symbols-outlined text-accent-gold animate-pulse text-sm">satellite_alt</span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-slate-400">Connecting to tracking service...</span>
+          }
+        </div>
+        <h1 class="text-7xl md:text-8xl font-display font-bold text-slate-900 dark:text-white mb-6 tracking-tighter leading-none">
+          TRACK<span class="text-accent-gold"> PACKAGE</span>
+        </h1>
+        <p class="text-slate-500 font-medium max-w-xl mx-auto">
+          Enter your tracking number to get real-time updates on your shipment status and history.
+        </p>
+      </header>
+
+      <!-- Search Console -->
+      <div class="glass-card tech-border p-4 mb-20 flex flex-col md:flex-row gap-4">
+        <div class="flex-1 relative">
+          <span class="material-symbols-outlined absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 text-2xl">search</span>
+          <input 
+            class="bg-transparent w-full pl-16 pr-6 py-6 focus:outline-none text-3xl font-display tracking-tighter text-slate-900 dark:text-white placeholder:text-slate-200 uppercase"
+            placeholder="SHIP-ID-XXXX"
+            [(ngModel)]="trackingNumber"
+            (keydown.enter)="handleTrack()"
+          />
+        </div>
+        <button 
+          (click)="handleTrack()"
+          class="btn-primary px-12 h-[80px]"
+        >
+          @if (!isSearching()) {
+            <span>Track Now</span>
+          }
+          @if (isSearching()) {
+            <div class="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          }
+        </button>
+      </div>
+
+      @if (errorMsg) {
+        <div class="glass-card tech-border p-6 mb-10 border-rose-500/20 bg-rose-500/5 text-center">
+          <p class="text-sm font-bold text-rose-500 uppercase tracking-widest">{{ errorMsg }}</p>
+        </div>
+      }
+
+      @if (isSearching()) {
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-20">
+          <div class="lg:col-span-4 space-y-8">
+             <div class="glass-card tech-border p-8">
+                <app-skeleton width="60px" height="60px" borderRadius="16px" customClass="mb-6"></app-skeleton>
+                <app-skeleton width="70%" height="28px" customClass="mb-4"></app-skeleton>
+                <app-skeleton width="40%" height="12px"></app-skeleton>
+             </div>
+             <div class="glass-card tech-border p-8">
+                <app-skeleton width="100%" height="100px"></app-skeleton>
+             </div>
+          </div>
+          <div class="lg:col-span-8 glass-card tech-border p-10">
+             <div class="space-y-12">
+                @for (i of [1,2,3]; track i) {
+                   <div class="flex gap-10">
+                      <app-skeleton width="28px" height="28px" borderRadius="100%"></app-skeleton>
+                      <div class="flex-1 space-y-4">
+                         <app-skeleton width="30%" height="24px"></app-skeleton>
+                         <app-skeleton width="100%" height="60px"></app-skeleton>
+                      </div>
+                   </div>
+                }
+             </div>
+          </div>
+        </div>
+      }
+
+      @if (result() && !isSearching()) {
+        <!-- Live Satellite View -->
+        <div class="glass-card tech-border p-6 mb-12 relative overflow-hidden group animate-fade-up shadow-neon" style="animation-delay: 200ms">
+          <div class="absolute inset-0 bg-accent-gold/[0.02] pointer-events-none"></div>
+          <div class="flex items-center justify-between mb-8 relative z-10">
+            <div class="flex items-center gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]"></div>
+              <h3 class="text-xs font-display font-black text-slate-900 dark:text-white uppercase tracking-[0.3em]">Live Satellite Telemetry</h3>
+            </div>
+            <div class="flex items-center gap-6 font-mono text-[9px] text-slate-400 font-bold uppercase tracking-widest">
+              <span class="hidden md:inline">HD SIGNAL: ACTIVE</span>
+              <span>LAT: 37° 46' 51" N</span>
+              <span>LON: 34° 23' 14" W</span>
+            </div>
+          </div>
+          <div class="relative rounded-2xl overflow-hidden aspect-video md:aspect-[21/9] border border-slate-200 dark:border-white/5 bg-slate-950">
+            <div id="trackingMap" class="w-full h-full z-0"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent pointer-events-none z-10"></div>
+            
+            <!-- Radar Sweep Overlay (Animated CSS) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-emerald-500/10 rounded-full animate-ping pointer-events-none z-20" style="animation-duration: 3s"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-[40%] bg-gradient-to-t from-emerald-500/40 to-transparent origin-bottom animate-[spin_4s_linear_infinite] pointer-events-none z-20"></div>
+            
+            <div class="absolute bottom-8 left-10 z-30">
+              <p class="text-[10px] font-mono font-bold text-accent-gold uppercase tracking-[0.4em] mb-2">Telemetry Acquisition: SUCCESS</p>
+              <h4 class="text-4xl font-display font-bold text-white uppercase tracking-tighter">{{ result()?.events?.[0]?.location || 'Searching...' }} <span class="text-emerald-500">Sector</span></h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-20" @hoverScale>
+          <!-- Left Info Panel -->
+          <div class="lg:col-span-4 space-y-8">
+            <div class="glass-card tech-border p-8 relative overflow-hidden bg-accent-gold/5">
+              <div class="flex items-center gap-4 mb-10">
+                <div class="w-14 h-14 bg-white dark:bg-primary-900 rounded-2xl flex items-center justify-center border border-slate-200 dark:border-white/5 shadow-inner">
+                  <span class="material-symbols-outlined text-accent-gold text-3xl">local_shipping</span>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-display font-bold text-slate-900 tracking-tight uppercase">{{ result()?.status }}</h3>
+                  <p class="data-label text-emerald-500">Live tracking active</p>
+                </div>
+              </div>
+              
+              <div class="space-y-6">
+                <div>
+                  <p class="data-label mb-2">Tracking ID</p>
+                  <p class="font-mono text-lg text-slate-900 dark:text-white font-bold">{{ result()?.number }}</p>
+                </div>
+                <div class="flex justify-between">
+                  <div>
+                    <p class="data-label mb-2">Total Weight</p>
+                    <p class="data-value text-xl">4.5 KG</p>
+                  </div>
+                  <div>
+                    <p class="data-label mb-2">Est. Delivery</p>
+                    <p class="data-value text-xl uppercase">{{ result()?.estimatedDelivery | date:'MMM dd' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tracking Accuracy -->
+            <div class="glass-card tech-border p-8">
+              <h3 class="data-label mb-6 text-slate-900 flex items-center gap-2">
+                <span class="material-symbols-outlined text-accent-gold text-sm">monitoring</span>
+                Tracking Accuracy
+              </h3>
+              <div class="space-y-4 font-mono text-[10px]">
+                <div class="flex justify-between items-center text-slate-400">
+                  <span>GPS RELIABILITY</span>
+                  <span class="text-emerald-500 font-bold">99.8%</span>
+                </div>
+                <div class="w-full h-1 bg-slate-100 dark:bg-primary-900 rounded-full overflow-hidden">
+                  <div class="w-[99%] h-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]"></div>
+                </div>
+                <div class="flex justify-between items-center text-slate-400">
+                  <span>SYSTEM STATUS</span>
+                  <span class="text-emerald-500 font-bold text-xs">ONLINE</span>
+                </div>
+              </div>
+            </div>
+            
+            @if (!store.isAuthenticated()) {
+              <div class="p-6 bg-slate-900 text-white rounded-2xl shadow-xl space-y-4 border border-white/5">
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-accent-gold">warning</span>
+                  <h4 class="text-xs font-bold uppercase tracking-widest leading-none">Restricted View</h4>
+                </div>
+                <p class="text-[10px] text-white/50 leading-relaxed font-medium">Log in to your Ship24x7™ account to access full shipping reports and high-resolution tracking details.</p>
+                <div class="pt-4 border-t border-white/5">
+                  <button routerLink="/login" class="text-[10px] font-bold text-accent-gold hover:text-white transition-colors uppercase tracking-widest flex items-center gap-2">
+                    Access Portal <span class="material-symbols-outlined text-xs">chevron_right</span>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Right Timeline Panel -->
+          <div class="lg:col-span-8 glass-card tech-border p-10 bg-slate-100/50 dark:bg-transparent">
+            <div class="flex justify-between items-baseline mb-12 border-b border-slate-200 pb-8">
+              <h3 class="text-2xl font-display font-bold text-slate-900 uppercase tracking-tight flex items-center gap-3">
+                <span class="material-symbols-outlined text-accent-gold">schedule</span>
+                Tracking History
+              </h3>
+              <span class="data-label italic">{{ result()?.events?.length }} updates found</span>
+            </div>
+            
+            <div class="space-y-12">
+              @for (event of result()?.events; track $index) {
+                <div class="flex gap-10 group relative">
+                  <!-- Connector -->
+                  @if ($index !== (result()!.events.length - 1)) {
+                    <div class="absolute left-[13px] top-8 w-px h-full border-l border-dashed border-slate-300"></div>
+                  }
+                  
+                  <div class="relative shrink-0 mt-1">
+                    <div 
+                      class="w-7 h-7 rounded-full border-2 shadow-xl z-20 relative transition-all group-hover:border-accent-gold duration-500 flex items-center justify-center font-mono text-[10px]"
+                      [ngClass]="$index === 0 ? 'bg-accent-gold text-white border-accent-gold' : 'bg-white dark:bg-primary-900 text-slate-400 border-slate-200 dark:border-white/5'"
+                    >
+                       0{{ result()!.events.length - $index }}
+                    </div>
+                    @if ($index === 0) {
+                      <div class="absolute inset-0 w-7 h-7 bg-accent-gold rounded-full animate-ping opacity-10"></div>
+                    }
+                  </div>
+
+                  <div class="flex-1">
+                    <div class="flex flex-wrap justify-between items-baseline gap-4 mb-4">
+                      <div class="space-y-1">
+                        <h4 class="font-display font-bold text-2xl tracking-tighter uppercase" [ngClass]="$index === 0 ? 'text-accent-gold' : 'text-slate-700'">
+                          {{ event.status }}
+                        </h4>
+                        <div class="flex items-center gap-2 text-slate-400">
+                           <span class="material-symbols-outlined text-[10px]">location_on</span>
+                           <span class="data-label lowercase font-normal italic">{{ event.location }}</span>
+                        </div>
+                      </div>
+                      <div class="px-3 py-1 bg-white dark:bg-white/5 rounded border border-slate-200 dark:border-white/10 font-mono text-[10px] text-slate-500 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[12px] opacity-60">calendar_today</span>
+                        {{ event.time | date:'MMM dd' }} • {{ event.time | date:'HH:mm' }}
+                      </div>
+                    </div>
+                    
+                    <div class="p-6 rounded-xl text-xs font-medium leading-relaxed border border-slate-100 dark:border-white/5 bg-white dark:bg-white/5 relative overflow-hidden group-hover:border-accent-gold/20 transition-all shadow-sm">
+                       <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-slate-500 opacity-5 text-5xl rotate-12">monitoring</span>
+                       <span class="relative z-10 text-slate-500 dark:text-slate-400 uppercase tracking-wide">{{ event.desc }}</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

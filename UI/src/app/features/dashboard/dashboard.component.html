@@ -1,0 +1,219 @@
+<div class="flex flex-col min-h-screen overflow-hidden transition-colors duration-300">
+  <!-- Top Navigation Header -->
+  <header class="bg-white/80 dark:bg-primary-950/80 backdrop-blur-md border-b border-slate-200 dark:border-white/5 sticky top-0 z-50 px-10 py-4 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-3 cursor-pointer" routerLink="/dashboard">
+          <div class="w-10 h-10 bg-accent-gold/10 rounded-xl flex items-center justify-center border border-accent-gold/30 shadow-neon">
+            <span class="material-symbols-outlined text-accent-gold">local_shipping</span>
+          </div>
+          <span class="text-xl font-display font-bold text-slate-900 dark:text-white tracking-tight uppercase">Ship<span class="text-accent-gold">24<span class="text-sm lowercase opacity-70 mx-0.5">x</span>7</span><sup class="text-[8px] ml-0.5 text-accent-gold/60">TM</sup></span>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-2">
+          <button class="nav-item active group">
+            <span class="material-symbols-outlined text-sm">dashboard</span>
+            <span>Overview</span>
+          </button>
+          <button class="nav-item group" routerLink="/shipments">
+            <span class="material-symbols-outlined text-sm">inventory_2</span>
+            <span>My Shipments</span>
+          </button>
+          <button class="nav-item group" routerLink="/track">
+            <span class="material-symbols-outlined text-sm">search</span>
+            <span>Track Package</span>
+          </button>
+          <button class="nav-item group" routerLink="/address-book">
+            <span class="material-symbols-outlined text-sm">contact_page</span>
+            <span>Address Book</span>
+          </button>
+          <button class="nav-item group" routerLink="/settings">
+            <span class="material-symbols-outlined text-sm">settings</span>
+            <span>Settings</span>
+          </button>
+          @if (store.isAdmin()) {
+            <button class="nav-item group border-l border-slate-200 dark:border-white/10 ml-2 pl-4" routerLink="/admin">
+              <span class="material-symbols-outlined text-sm text-accent-gold">admin_panel_settings</span>
+              <span class="text-accent-gold">Admin Console</span>
+            </button>
+          }
+        </nav>
+
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button 
+          (click)="store.toggleTheme()"
+          class="p-3 glass-card hover:border-accent-gold/40 group relative overflow-hidden flex items-center justify-center"
+          title="Toggle Theme"
+        >
+          @if (store.theme() === 'dark') {
+            <span class="material-symbols-outlined text-accent-gold">light_mode</span>
+          } @else {
+            <span class="material-symbols-outlined text-slate-600">dark_mode</span>
+          }
+        </button>
+
+        <div class="h-8 w-px bg-slate-200 mx-2"></div>
+        
+        <div class="flex items-center gap-3">
+          <div class="text-right hidden sm:block">
+            <p class="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-wider leading-none">{{ store.currentUser()?.fullName }}</p>
+            <p class="data-label mt-1">Customer</p>
+          </div>
+          <button 
+            (click)="store.logout()"
+            class="w-10 h-10 flex items-center justify-center bg-rose-500/5 hover:bg-rose-500/10 text-rose-500/70 hover:text-rose-400 rounded-xl transition-all border border-transparent hover:border-rose-500/20"
+          >
+            <span class="material-symbols-outlined text-lg">logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto p-10 relative scroll-smooth max-w-7xl mx-auto w-full">
+    <!-- Dashboard Header -->
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="px-2 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded text-[10px] font-mono text-emerald-500 flex items-center gap-2 uppercase font-bold">
+            <span class="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></span>
+            System Status: Active
+          </div>
+        </div>
+        <h1 class="text-6xl font-display font-bold text-slate-900 dark:text-white tracking-tighter leading-none mb-4 uppercase">
+          Welcome, <span class="text-accent-gold">{{ store.currentUser()?.fullName?.split(' ')?.[0] || 'User' }}</span>
+        </h1>
+        <p class="text-slate-500 font-medium tracking-wide">
+          Manage your personal logistics and track deliveries in real-time.
+        </p>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button routerLink="/new-shipment" class="btn-primary px-8 h-[56px]">
+          <span class="material-symbols-outlined text-lg">add</span>
+          Create Shipment
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      @for (stat of stats(); track stat.label) {
+        <div class="glass-card tech-border p-8 group hover:-translate-y-1">
+          <div class="flex justify-between items-start mb-8">
+            <div class="p-3 bg-slate-50 dark:bg-primary-900 rounded-xl border border-slate-200 dark:border-white/5 shadow-inner" [class]="stat.color">
+              <span class="material-symbols-outlined text-xl">{{ stat.icon }}</span>
+            </div>
+            <span class="data-value font-bold" [class]="stat.changeColor">{{ stat.change }}</span>
+          </div>
+          <p class="data-label mb-2">{{ stat.label }}</p>
+          <div class="flex items-baseline gap-2">
+            <span class="text-4xl font-display font-bold text-slate-900 dark:text-white tracking-tighter">{{ stat.value }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-10">
+      <!-- Recent Shipments -->
+      <div class="lg:col-span-2 space-y-8">
+        <div class="glass-card tech-border p-8">
+          <h3 class="text-xl font-display font-bold text-slate-900 dark:text-white uppercase tracking-tight mb-8">Recent Shipments</h3>
+          <div class="space-y-4">
+            @for (item of recentShipments(); track item.id) {
+              <div class="flex items-center gap-6 p-5 bg-slate-50 dark:bg-primary-900/50 rounded-xl border border-slate-100 dark:border-white/5 hover:border-accent-gold/20 transition-all group cursor-pointer shadow-sm hover:shadow-md" [routerLink]="['/track', item.trackingNumber]">
+                <div class="w-12 h-12 rounded-lg bg-white dark:bg-primary-950 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 group-hover:text-accent-gold transition-colors">
+                  <span class="material-symbols-outlined">{{ item.status === 'Delivered' ? 'check_circle' : 'local_shipping' }}</span>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-1">
+                    <span class="font-mono text-sm font-bold text-slate-900 dark:text-white">#{{ item.trackingNumber }}</span>
+                    <span class="px-2 py-0.5 bg-accent-gold/5 rounded text-[10px] font-bold text-accent-gold uppercase tracking-tighter border border-accent-gold/10">{{ item.status }}</span>
+                  </div>
+                  <p class="data-label lowercase font-normal italic opacity-60">{{ item.senderAddress.city }} to {{ item.receiverAddress.city }}</p>
+                </div>
+                <div class="text-right">
+                  <p class="data-value text-slate-900 dark:text-white">{{ item.bookedAt | date:'mediumDate' }}</p>
+                  <p class="text-[10px] text-slate-400 uppercase font-bold">{{ item.serviceType || 'Standard' }}</p>
+                </div>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-accent-gold transition-all group-hover:translate-x-1">chevron_right</span>
+              </div>
+            }
+            @if (recentShipments().length === 0) {
+              <div class="py-12 text-center">
+                <span class="material-symbols-outlined text-4xl text-slate-300 mb-4">inventory_2</span>
+                <p class="text-slate-500 font-medium">No recent shipments found.</p>
+                <button routerLink="/new-shipment" class="text-accent-gold font-bold uppercase tracking-widest text-[10px] mt-4 hover:underline">Create your first shipment</button>
+              </div>
+            }
+            @if (recentShipments().length > 0) {
+              <div class="pt-4 text-center">
+                <a routerLink="/shipments" class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-accent-gold transition-colors">View Full History</a>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Side Intelligence -->
+      <div class="space-y-8">
+        <div class="glass-card tech-border p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
+              <span class="w-1 h-1 bg-accent-gold rounded-full animate-ping"></span>
+              Updates & Alerts
+            </h3>
+            <a routerLink="/notifications" class="text-[10px] font-bold text-accent-gold hover:underline uppercase tracking-widest cursor-pointer">
+              View All
+            </a>
+          </div>
+          <div class="space-y-4">
+            @for (note of notifications(); track note.id) {
+              <div class="p-4 bg-accent-gold/5 border border-accent-gold/20 rounded-xl relative overflow-hidden group">
+                <div class="absolute top-0 left-0 w-1 h-full bg-accent-gold"></div>
+                <p class="text-xs font-bold text-accent-gold mb-1 flex justify-between">
+                  <span>{{ note.eventType }} RECEIVED</span>
+                  <span class="opacity-50 font-mono">{{ note.createdAt | date:'shortTime' }}</span>
+                </p>
+                <p class="text-[10px] text-slate-400 leading-relaxed uppercase font-medium mb-2">{{ note.body }}</p>
+                @if (extractOTP(note.body); as otp) {
+                  <div class="flex items-center gap-2 bg-black/5 dark:bg-white/5 p-2 rounded border border-white/5">
+                    <span class="text-[10px] font-mono text-accent-gold font-bold">OTP: {{ otp }}</span>
+                    <button (click)="store.copyToClipboard(otp)" class="material-symbols-outlined text-xs opacity-40 hover:opacity-100 transition-opacity">content_copy</button>
+                  </div>
+                }
+              </div>
+            }
+            @if (notifications().length === 0) {
+              <div class="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
+                <p class="text-xs font-bold text-emerald-600 mb-1">SYSTEM NOMINAL</p>
+                <p class="text-[10px] text-emerald-500 leading-relaxed uppercase font-medium">ALL SHIPMENT PROCESSES ARE RUNNING SMOOTHLY. NO PENDING ALERTS.</p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="glass-card tech-border p-8 bg-accent-gold/[0.02]">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="w-12 h-12 rounded-full bg-accent-gold/10 flex items-center justify-center text-accent-gold">
+              <span class="material-symbols-outlined text-2xl">verified</span>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest leading-none mb-1">Safety Score</h4>
+              <p class="text-[10px] text-slate-400 font-bold">Data Integrity 100%</p>
+            </div>
+          </div>
+          <div class="w-full h-1 bg-slate-100 rounded-full overflow-hidden mb-6">
+            <div class="w-[98%] h-full bg-accent-gold shadow-[0_0_10px_rgba(16,185,129,0.3)]"></div>
+          </div>
+          <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest leading-relaxed">
+            All shipment processes are verified. Our system ensures your packages are handled with care.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,125 @@
+<div class="min-h-screen bg-slate-50 dark:bg-primary-950 p-6 md:p-12 font-sans transition-colors duration-300">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div>
+        <h1 class="text-5xl font-display font-black text-slate-900 dark:text-white uppercase tracking-tighter">
+          Admin <span class="text-accent-gold">Pulse</span>
+        </h1>
+        <p class="data-label text-lg">Global Logistics Intelligence Dashboard</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <button (click)="store.toggleTheme()" class="p-4 glass-card hover:border-accent-gold/40 flex items-center justify-center">
+          @if (store.theme() === 'dark') { <span class="material-symbols-outlined text-accent-gold">light_mode</span> }
+          @else { <span class="material-symbols-outlined text-slate-600">dark_mode</span> }
+        </button>
+        <button routerLink="/dashboard" class="group text-slate-500 hover:text-accent-gold flex items-center gap-2 transition-colors font-bold uppercase tracking-widest text-[10px]">
+          User View <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Key Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      @for (stat of [
+        { label: 'Total Shipments', value: stats().totalShipments, icon: 'inventory_2', color: 'text-blue-500' },
+        { label: 'Gross Revenue', value: stats().revenue | currency:'INR', icon: 'payments', color: 'text-emerald-500' },
+        { label: 'Active Hubs', value: stats().activeHubs, icon: 'hub', color: 'text-accent-gold' },
+        { label: 'System Exceptions', value: stats().exceptions, icon: 'warning', color: 'text-rose-500' }
+      ]; track stat.label) {
+        <div class="glass-card tech-border p-6 group hover:border-accent-gold/20 transition-all">
+          <div class="flex items-start justify-between mb-4">
+             <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-primary-900 flex items-center justify-center border border-slate-100 dark:border-white/5 transition-transform group-hover:scale-110">
+                <span class="material-symbols-outlined" [ngClass]="stat.color">{{ stat.icon }}</span>
+             </div>
+             <span class="text-[10px] font-black uppercase tracking-widest text-emerald-500">+12%</span>
+          </div>
+          <p class="data-label text-[10px] mb-1">{{ stat.label }}</p>
+          <p class="text-2xl font-display font-black text-slate-900 dark:text-white tracking-tight">{{ stat.value }}</p>
+        </div>
+      }
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+      <!-- Revenue Chart -->
+      <div class="lg:col-span-8 glass-card tech-border p-8 relative overflow-hidden">
+        <div class="flex items-center justify-between mb-10">
+           <div>
+              <h3 class="text-xs font-display font-black text-slate-900 dark:text-white uppercase tracking-[0.3em]">Revenue Performance</h3>
+              <p class="text-[10px] text-slate-400 font-mono mt-1">30-DAY ANALYTICAL SNAPSHOT</p>
+           </div>
+           <div class="flex items-center gap-4">
+              <div class="flex items-center gap-2">
+                 <div class="w-2 h-2 rounded-full bg-accent-gold"></div>
+                 <span class="text-[9px] font-bold text-slate-500 uppercase">Gross Profit</span>
+              </div>
+           </div>
+        </div>
+        <div #revenueChart class="w-full h-[200px] pointer-events-none"></div>
+      </div>
+
+      <!-- Hub Distribution -->
+      <div class="lg:col-span-4 glass-card tech-border p-8 relative overflow-hidden">
+        <h3 class="text-xs font-display font-black text-slate-900 dark:text-white uppercase tracking-[0.3em] mb-10 text-center">Hub Utilization</h3>
+        <div #hubChart class="w-full h-[200px] flex items-center justify-center"></div>
+        <div class="mt-6 space-y-2">
+           <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
+              <span class="text-slate-400">Mumbai Terminal</span>
+              <span class="text-accent-gold">85%</span>
+           </div>
+           <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
+              <span class="text-slate-400">Delhi North</span>
+              <span class="text-emerald-500">92%</span>
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Administrative Modules -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
+       @for (module of [
+         { name: 'Shipment Control', route: '/admin/shipments', icon: 'settings_suggest', desc: 'Lifecycle management' },
+         { name: 'Identity Control', route: '/admin/users', icon: 'person', desc: 'User roles & access' },
+         { name: 'Hub Provisioning', route: '/admin/hubs', icon: 'settings_input_component', desc: 'Node infrastructure' },
+         { name: 'Price Engines', route: '/admin/rates', icon: 'trending_up', desc: 'Dynamic service rates' },
+         { name: 'Comm Templates', route: '/admin/templates', icon: 'mark_email_unread', desc: 'Transactional messages' }
+       ]; track module.name) {
+          <div [routerLink]="module.route" class="glass-card p-6 border-slate-100 dark:border-white/5 hover:border-accent-gold transition-all cursor-pointer group">
+             <div class="w-10 h-10 bg-slate-50 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-6 group-hover:bg-accent-gold group-hover:text-primary-950 transition-colors">
+                <span class="material-symbols-outlined text-sm">{{ module.icon }}</span>
+             </div>
+             <h4 class="text-[11px] font-black uppercase text-slate-900 dark:text-white tracking-widest mb-1">{{ module.name }}</h4>
+             <p class="text-[10px] text-slate-400">{{ module.desc }}</p>
+          </div>
+       }
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="glass-card tech-border p-8">
+       <div class="flex items-center justify-between mb-8">
+          <h3 class="text-xs font-display font-black text-slate-900 dark:text-white uppercase tracking-[0.3em]">Live Activity Feed</h3>
+          <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[9px] font-black uppercase tracking-widest rounded-full border border-emerald-500/20">System Normal</span>
+       </div>
+       <div class="space-y-6">
+          @for (shipment of recentShipments(); track shipment.id) {
+             <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-primary-900/10 border border-slate-100 dark:border-white/5 rounded-2xl group hover:border-accent-gold/20 transition-all">
+                <div class="flex items-center gap-6">
+                   <div class="w-10 h-10 rounded-full bg-white dark:bg-primary-950 flex items-center justify-center text-slate-300">
+                      <span class="material-symbols-outlined text-lg">data_usage</span>
+                   </div>
+                   <div>
+                      <p class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-tight">Shipment #{{ shipment.id }} Processed for {{ shipment.customer }}</p>
+                      <p class="text-[9px] font-mono text-slate-400">{{ shipment.time }} • {{ shipment.amount | currency:'INR' }}</p>
+                   </div>
+                </div>
+                <div class="flex items-center gap-4">
+                   <span class="px-2 py-1 bg-blue-500/10 text-blue-500 text-[8px] font-black uppercase tracking-widest rounded border border-blue-500/20">{{ shipment.status }}</span>
+                   <button class="text-slate-300 hover:text-accent-gold transition-colors"><span class="material-symbols-outlined text-sm">open_in_new</span></button>
+                </div>
+             </div>
+          }
+       </div>
+    </div>
+  </div>
+</div>

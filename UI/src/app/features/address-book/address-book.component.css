@@ -1,0 +1,15 @@
+.tech-border {
+  @apply border border-slate-200 dark:border-white/5;
+}
+
+.glass-card {
+  @apply bg-white/70 dark:bg-primary-900/40 backdrop-blur-xl transition-all duration-300;
+}
+
+.data-label {
+  @apply text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-primary-800;
+}
+
+.input-field {
+  @apply w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl p-4 text-sm font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-accent-gold/50 transition-all;
+}

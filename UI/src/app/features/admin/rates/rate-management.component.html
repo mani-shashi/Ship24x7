@@ -1,0 +1,233 @@
+<div class="min-h-screen bg-slate-50 dark:bg-primary-950 p-6 md:p-12 font-sans overflow-x-hidden transition-colors duration-300">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <header class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div>
+        <div class="flex items-center gap-4 mb-4">
+           <button routerLink="/admin" class="w-10 h-10 glass-card flex items-center justify-center hover:text-accent-gold transition-colors">
+              <span class="material-symbols-outlined text-sm">arrow_back</span>
+           </button>
+           <h1 class="text-4xl font-display font-black text-slate-900 dark:text-white uppercase tracking-tighter">
+             Service <span class="text-accent-gold">Rates</span>
+           </h1>
+        </div>
+        <p class="data-label">Configuring {{ rates().length }} Shipping Service Tiers</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <button (click)="openCreateModal()" class="btn-primary px-6 py-3 flex items-center gap-2">
+           <span class="material-symbols-outlined text-sm">add</span>
+           <span>Define New Service</span>
+        </button>
+        <button (click)="store.toggleTheme()" class="p-3 glass-card hover:border-accent-gold/40 flex items-center justify-center">
+          @if (store.theme() === 'dark') { <span class="material-symbols-outlined text-accent-gold">light_mode</span> }
+          @else { <span class="material-symbols-outlined text-slate-600">dark_mode</span> }
+        </button>
+      </div>
+    </header>
+
+    <!-- Search & Filters -->
+    <div class="mb-6 flex items-center gap-4">
+      <div class="relative flex-1 group">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-accent-gold transition-colors">search</span>
+        <input 
+          type="text" 
+          placeholder="Search by Service, Code, or ETA..."
+          class="w-full bg-white dark:bg-primary-900 border border-slate-200 dark:border-white/10 rounded-2xl pl-12 pr-4 py-4 text-sm focus:border-accent-gold/50 outline-none transition-all shadow-sm"
+          [ngModel]="searchTerm()"
+          (input)="searchTerm.set($any($event.target).value)"
+        >
+      </div>
+    </div>
+
+    <!-- Rates Table -->
+    <div class="glass-card overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-primary-900/20">
+              <th class="p-6 data-label">Service Tier</th>
+              <th class="p-6 data-label">Code</th>
+              <th class="p-6 data-label">Base Price</th>
+              <th class="p-6 data-label">Per KG</th>
+              <th class="p-6 data-label">ETA</th>
+              <th class="p-6 data-label">Status</th>
+              <th class="p-6 data-label text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+            @for (rate of filteredRates(); track rate.id) {
+              <tr class="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors group">
+                <td class="p-6">
+                   <div class="flex items-center gap-4">
+                      <div class="w-10 h-10 rounded-xl bg-accent-gold/10 flex items-center justify-center text-accent-gold group-hover:scale-110 transition-transform">
+                         <span class="material-symbols-outlined">payments</span>
+                      </div>
+                      <p class="font-bold text-slate-900 dark:text-white">{{ rate.serviceName }}</p>
+                   </div>
+                </td>
+                <td class="p-6">
+                   <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-widest">{{ rate.code }}</span>
+                </td>
+                <td class="p-6">
+                   <p class="font-display font-black text-slate-900 dark:text-white">{{ rate.basePrice | currency:'INR' }}</p>
+                </td>
+                <td class="p-6">
+                   <p class="text-xs font-bold text-emerald-500">+ {{ rate.perKgRate | currency:'INR' }}/kg</p>
+                </td>
+                <td class="p-6">
+                   <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-sm text-slate-400">schedule</span>
+                      <span class="text-xs font-bold text-slate-600 dark:text-slate-300">{{ rate.deliveryTime }}</span>
+                   </div>
+                </td>
+                <td class="p-6">
+                   <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border"
+                         [ngClass]="rate.status === 'Active' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-slate-500/10 text-slate-500 border-slate-500/20'">
+                      {{ rate.status }}
+                   </span>
+                </td>
+                <td class="p-6 text-right">
+                  <div class="flex items-center justify-end gap-2">
+                    <button 
+                       (click)="openEditModal(rate)" 
+                       class="p-2 bg-slate-100 dark:bg-white/5 rounded-xl hover:text-accent-gold transition-all"
+                       title="Edit Pricing Structure"
+                    >
+                       <span class="material-symbols-outlined text-sm">edit</span>
+                    </button>
+                    <button 
+                       (click)="deleteRate(rate.id, rate.serviceName)" 
+                       class="p-2 bg-slate-100 dark:bg-white/5 rounded-xl text-rose-500 hover:bg-rose-500 hover:text-white transition-all"
+                       title="Retire Tier"
+                    >
+                       <span class="material-symbols-outlined text-sm">delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+            @if (filteredRates().length === 0) {
+              <tr>
+                <td colspan="7" class="p-10 text-center text-slate-400 italic uppercase tracking-widest text-xs">No shipping service tiers found.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Optimization Notice -->
+    <div class="mt-8 p-6 border-2 border-dashed border-slate-200 dark:border-white/5 rounded-3xl flex items-center gap-6 opacity-60">
+       <div class="w-12 h-12 rounded-full bg-accent-gold/10 flex items-center justify-center text-accent-gold">
+          <span class="material-symbols-outlined">trending_up</span>
+       </div>
+       <div>
+          <p class="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">Dynamic Pricing Engine Active</p>
+          <p class="text-[9px] text-slate-400 font-medium">Rates are automatically calculated in the Shipment Wizard based on these master tables. Changes propagate instantly to all users.</p>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Premium Pricing Config Modal -->
+@if (isModalOpen() && selectedRate()) {
+  <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-md flex items-center justify-center z-[1000] p-4 animate-fade-in">
+    <div class="glass-card tech-border max-w-lg w-full p-8 relative overflow-hidden bg-white/95 dark:bg-primary-950/95 shadow-2xl animate-scale-up">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-6 border-b border-slate-100 dark:border-white/5 mb-8">
+        <div>
+          <span class="text-[8px] font-black uppercase tracking-[0.2em] text-accent-gold">Pricing Strategy Hub</span>
+          <h3 class="text-2xl font-display font-black text-slate-900 dark:text-white uppercase tracking-tight mt-1">
+            {{ isEditMode() ? 'Edit Service' : 'Define Service' }}
+          </h3>
+        </div>
+        <button (click)="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="space-y-6">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="data-label block mb-2">Service Name *</label>
+            <input 
+              type="text" 
+              [(ngModel)]="selectedRate()!.serviceName"
+              placeholder="e.g. Express Air"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white"
+            />
+          </div>
+          <div>
+            <label class="data-label block mb-2">Service Code *</label>
+            <input 
+              type="text" 
+              [(ngModel)]="selectedRate()!.code"
+              placeholder="e.g. EXP-AIR"
+              [disabled]="isEditMode()"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white disabled:opacity-50"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="data-label block mb-2">Base Cost (INR) *</label>
+            <input 
+              type="number" 
+              [(ngModel)]="selectedRate()!.basePrice"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white"
+            />
+          </div>
+          <div>
+            <label class="data-label block mb-2">Rate Per KG (INR) *</label>
+            <input 
+              type="number" 
+              [(ngModel)]="selectedRate()!.perKgRate"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="data-label block mb-2">Delivery Timeframe (ETA) *</label>
+            <input 
+              type="text" 
+              [(ngModel)]="selectedRate()!.deliveryTime"
+              placeholder="e.g. 1-2 Days"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white"
+            />
+          </div>
+          <div>
+            <label class="data-label block mb-2">Deployment Status</label>
+            <select 
+              [(ngModel)]="selectedRate()!.status"
+              class="w-full bg-slate-50 dark:bg-primary-900/50 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-accent-gold outline-none transition-all text-slate-900 dark:text-white"
+            >
+              <option value="Active">Active / Public</option>
+              <option value="Suspended">Suspended / Draft</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-10 flex items-center justify-end gap-4 border-t border-slate-100 dark:border-white/5 pt-6">
+        <button 
+          (click)="closeModal()" 
+          class="px-6 py-3 border border-slate-200 dark:border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-white/5 transition-all text-slate-500 dark:text-white"
+        >
+          Cancel
+        </button>
+        <button 
+          (click)="saveRate()" 
+          class="btn-primary px-8 h-[44px]"
+        >
+          Deploy Pricing
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,18 @@
+.glass-card {
+  @apply bg-white/70 dark:bg-primary-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-3xl transition-all duration-300;
+}
+
+.data-label {
+  @apply text-[10px] font-bold text-slate-400 dark:text-primary-800 uppercase tracking-[0.2em];
+}
+
+/* Custom Scrollbar */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+.overflow-x-auto::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 dark:bg-white/10 rounded-full;
+}

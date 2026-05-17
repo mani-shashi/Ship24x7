@@ -1,0 +1,199 @@
+<div class="flex flex-col min-h-screen overflow-hidden transition-colors duration-300">
+  <!-- Top Navigation Header -->
+  <header class="bg-white/80 dark:bg-primary-950/80 backdrop-blur-md border-b border-slate-200 dark:border-white/5 sticky top-0 z-50 px-10 py-4 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-3 cursor-pointer" routerLink="/dashboard">
+          <div class="w-10 h-10 bg-accent-gold/10 rounded-xl flex items-center justify-center border border-accent-gold/30 shadow-neon">
+            <span class="material-symbols-outlined text-accent-gold">local_shipping</span>
+          </div>
+          <span class="text-xl font-display font-bold text-slate-900 dark:text-white tracking-tight uppercase">Ship<span class="text-accent-gold">24<span class="text-sm lowercase opacity-70 mx-0.5">x</span>7</span><sup class="text-[8px] ml-0.5 text-accent-gold/60">TM</sup></span>
+        </div>
+        <nav class="hidden md:flex items-center gap-2">
+          <button class="nav-item group" routerLink="/dashboard"><span class="material-symbols-outlined text-sm">dashboard</span><span>Overview</span></button>
+          <button class="nav-item active group" routerLink="/shipments"><span class="material-symbols-outlined text-sm">inventory_2</span><span>My Shipments</span></button>
+          <button class="nav-item group" routerLink="/track"><span class="material-symbols-outlined text-sm">search</span><span>Track Package</span></button>
+          <button class="nav-item group" routerLink="/address-book"><span class="material-symbols-outlined text-sm">contact_page</span><span>Address Book</span></button>
+          <button class="nav-item group" routerLink="/settings"><span class="material-symbols-outlined text-sm">settings</span><span>Settings</span></button>
+          @if (store.isAdmin()) {
+            <button class="nav-item group border-l border-slate-200 dark:border-white/10 ml-2 pl-4" routerLink="/admin">
+              <span class="material-symbols-outlined text-sm text-accent-gold">admin_panel_settings</span>
+              <span class="text-accent-gold">Admin Console</span>
+            </button>
+          }
+        </nav>
+
+      </div>
+      <div class="flex items-center gap-4">
+        <button (click)="store.toggleTheme()" class="p-3 glass-card hover:border-accent-gold/40 flex items-center justify-center">
+          @if (store.theme() === 'dark') { <span class="material-symbols-outlined text-accent-gold">light_mode</span> }
+          @else { <span class="material-symbols-outlined text-slate-600">dark_mode</span> }
+        </button>
+        <div class="h-8 w-px bg-slate-200 mx-2"></div>
+        <button (click)="store.logout()" class="w-10 h-10 flex items-center justify-center bg-rose-500/5 hover:bg-rose-500/10 text-rose-500/70 hover:text-rose-400 rounded-xl transition-all border border-transparent hover:border-rose-500/20">
+          <span class="material-symbols-outlined text-lg">logout</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 p-10 max-w-7xl mx-auto w-full">
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-8">
+      <div>
+        <h1 class="text-5xl font-display font-bold text-slate-900 tracking-tighter leading-none mb-4 uppercase">
+          MY <span class="text-accent-gold">SHIPMENTS</span>
+        </h1>
+        <p class="text-slate-500 font-medium">View and manage all your shipping history.</p>
+      </div>
+      <button routerLink="/new-shipment" class="btn-primary px-8 h-[56px]">
+        <span class="material-symbols-outlined text-lg">add</span>
+        New Shipment
+      </button>
+    </header>
+
+    <!-- Shipments Table -->
+    <div class="glass-card tech-border overflow-hidden">
+      <!-- Table Header -->
+      <div class="grid grid-cols-12 gap-4 p-6 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-primary-950/50">
+        <div class="col-span-1 flex items-center">
+          <input 
+            type="checkbox" 
+            class="w-4 h-4 rounded border-slate-300 text-accent-gold focus:ring-accent-gold bg-transparent"
+            [checked]="selectedIds().size === shipments().length && shipments().length > 0"
+            (change)="toggleAll()"
+          >
+        </div>
+        <div class="col-span-3 data-label">Tracking Number</div>
+        <div class="col-span-2 data-label">Status</div>
+        <div class="col-span-2 data-label">Route</div>
+        <div class="col-span-2 data-label">Date</div>
+        <div class="col-span-2 data-label text-right">Amount</div>
+      </div>
+      
+      <!-- Table Rows -->
+      <div [@listAnimation]="shipments().length">
+      @if (isLoading()) {
+        @for (i of [1,2,3,4,5]; track i) {
+          <div class="grid grid-cols-12 gap-4 p-6 border-b border-slate-50 dark:border-white/5">
+             <div class="col-span-1 flex items-center">
+                <app-skeleton width="16px" height="16px" borderRadius="4px"></app-skeleton>
+             </div>
+             <div class="col-span-3 flex items-center gap-3">
+                <app-skeleton width="40px" height="40px" borderRadius="10px"></app-skeleton>
+                <app-skeleton width="120px" height="16px"></app-skeleton>
+             </div>
+             <div class="col-span-2 flex items-center">
+                <app-skeleton width="80px" height="24px" borderRadius="100px"></app-skeleton>
+             </div>
+             <div class="col-span-2 flex items-center">
+                <app-skeleton width="140px" height="16px"></app-skeleton>
+             </div>
+             <div class="col-span-2 flex items-center">
+                <app-skeleton width="100px" height="16px"></app-skeleton>
+             </div>
+             <div class="col-span-2 flex items-center justify-end">
+                <app-skeleton width="60px" height="16px"></app-skeleton>
+             </div>
+          </div>
+        }
+      } @else if (shipments().length > 0) {
+        @for (item of shipments(); track item.id) {
+          <div class="grid grid-cols-12 gap-4 p-6 border-b border-slate-50 dark:border-white/5 last:border-0 hover:bg-accent-gold/[0.02] transition-colors group cursor-pointer" 
+               [ngClass]="{ 'bg-accent-gold/[0.05]': selectedIds().has(item.id) }">
+            <div class="col-span-1 flex items-center" (click)="$event.stopPropagation()">
+              <input 
+                type="checkbox" 
+                class="w-4 h-4 rounded border-slate-300 text-accent-gold focus:ring-accent-gold bg-transparent"
+                [checked]="selectedIds().has(item.id)"
+                (change)="toggleSelection(item.id)"
+              >
+            </div>
+            <div class="col-span-3 flex items-center gap-3" [routerLink]="['/track', item.trackingNumber]">
+              <div class="w-10 h-10 rounded-lg bg-slate-50 dark:bg-primary-900 border border-slate-200 dark:border-white/5 flex items-center justify-center text-slate-400 group-hover:text-accent-gold transition-colors">
+                <span class="material-symbols-outlined text-sm">{{ 
+                  item.status === 'Delivered' ? 'check_circle' : 
+                  item.status === 'Cancelled' || item.status === 'Failed' ? 'cancel' : 
+                  item.status === 'Draft' ? 'draft' : 
+                  item.status === 'Paid' || item.status === 'Booked' ? 'task_alt' :
+                  'local_shipping' 
+                }}</span>
+              </div>
+              <span class="font-mono text-sm font-bold text-slate-900 dark:text-white">#{{ item.trackingNumber }}</span>
+            </div>
+            <div class="col-span-2 flex flex-col justify-center gap-1" [routerLink]="['/track', item.trackingNumber]">
+              <span class="w-fit px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                [ngClass]="{
+                  'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20': item.status === 'Delivered' || item.status === 'Paid',
+                  'bg-blue-500/10 text-blue-500 border border-blue-500/20': item.status === 'InTransit' || item.status === 'Booked',
+                  'bg-amber-500/10 text-amber-500 border border-amber-500/20': item.status === 'PickedUp' || item.status === 'PaymentPending',
+                  'bg-rose-500/10 text-rose-500 border border-rose-500/20': item.status === 'Cancelled' || item.status === 'Failed' || item.status === 'PaymentFailed',
+                  'bg-slate-500/10 text-slate-500 border border-slate-500/20': item.status === 'Draft',
+                  'bg-indigo-500/10 text-indigo-500 border border-indigo-500/20': item.status === 'OutForDelivery'
+                }">
+                {{ item.status }}
+              </span>
+              @if (item.status === 'OutForDelivery' && getOTPForShipment(item.trackingNumber); as otp) {
+                <div class="flex items-center gap-1.5 px-2 py-1 bg-accent-gold/10 border border-accent-gold/20 rounded w-fit">
+                  <span class="text-[9px] font-bold text-accent-gold uppercase tracking-tighter">OTP: {{ otp }}</span>
+                  <button (click)="$event.stopPropagation(); store.copyToClipboard(otp)" class="material-symbols-outlined text-[10px] text-accent-gold hover:text-white transition-colors">content_copy</button>
+                </div>
+              }
+            </div>
+            <div class="col-span-2 flex items-center text-xs text-slate-500 dark:text-primary-700 font-medium" [routerLink]="['/track', item.trackingNumber]">
+              {{ item.senderAddress.city }} → {{ item.receiverAddress.city }}
+            </div>
+            <div class="col-span-2 flex items-center" [routerLink]="['/track', item.trackingNumber]">
+              <span class="data-value">{{ item.bookedAt | date:'mediumDate' }}</span>
+            </div>
+            <div class="col-span-2 flex items-center justify-end" [routerLink]="['/track', item.trackingNumber]">
+              <span class="font-mono text-sm font-bold text-slate-900 dark:text-white">{{ item.totalAmount | currency:'INR' }}</span>
+            </div>
+          </div>
+        }
+      } @else {
+        <div class="p-20 text-center">
+          <div class="w-20 h-20 bg-slate-50 dark:bg-primary-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-4xl text-slate-300">inventory_2</span>
+          </div>
+          <h3 class="text-xl font-display font-bold text-slate-900 dark:text-white uppercase tracking-tight mb-2">No shipments found</h3>
+          <p class="text-slate-500 text-sm mb-8">You haven't created any shipments yet.</p>
+          <button routerLink="/new-shipment" class="btn-primary px-8 mx-auto">
+            Create Your First Shipment
+          </button>
+        </div>
+      }
+      </div>
+    </div>
+  </main>
+
+  <!-- Bulk Action Bar -->
+  @if (selectedIds().size > 0) {
+    <div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[60] animate-fade-up">
+      <div class="bg-slate-900 dark:bg-primary-950 text-white px-8 py-4 rounded-full shadow-2xl border border-white/10 flex items-center gap-10 backdrop-blur-xl">
+        <div class="flex items-center gap-4 border-r border-white/10 pr-10">
+          <span class="material-symbols-outlined text-accent-gold">check_circle</span>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest leading-none">{{ selectedIds().size }} Selected</p>
+            <p class="text-[9px] text-white/40 font-mono mt-1 uppercase">Logistics Batch Active</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <button (click)="bulkAction('Download Labels')" class="p-2 hover:bg-white/5 rounded-lg transition-colors group relative">
+            <span class="material-symbols-outlined text-xl">download</span>
+          </button>
+          <button (click)="bulkAction('Print Manifest')" class="p-2 hover:bg-white/5 rounded-lg transition-colors group relative">
+            <span class="material-symbols-outlined text-xl">print</span>
+          </button>
+          <button (click)="bulkAction('Archive')" class="p-2 hover:bg-white/5 rounded-lg transition-colors group relative">
+            <span class="material-symbols-outlined text-xl text-rose-400">archive</span>
+          </button>
+        </div>
+
+        <button (click)="selectedIds().clear()" class="text-[10px] font-bold uppercase tracking-[0.2em] text-accent-gold hover:text-white transition-colors">
+          Clear
+        </button>
+      </div>
+    </div>
+  }
+</div>

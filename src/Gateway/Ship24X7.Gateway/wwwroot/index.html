@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship24X7 API Gateway</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .service-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .service-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .service-description {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .info-box {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        .info-box h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .info-box p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .endpoint {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .status-running {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚢 Ship24X7 API Gateway</h1>
+            <p>Unified API Gateway for Ship24X7 Microservices Platform</p>
+            <span class="status-badge status-running">● Running on Port 8000</span>
+        </div>
+        
+        <div class="info-box">
+            <h2>📡 Gateway Information</h2>
+            <p>This API Gateway routes requests to the following microservices:</p>
+            <div class="endpoint">Base URL: http://localhost:8000</div>
+            <p style="margin-top: 15px;">All API requests should be made through this gateway for:</p>
+            <ul style="margin-left: 20px; color: #666;">
+                <li>Unified authentication and authorization</li>
+                <li>Rate limiting and throttling</li>
+                <li>Request/response logging</li>
+                <li>Circuit breaker and retry policies</li>
+                <li>CORS handling</li>
+            </ul>
+        </div>
+        
+        <div class="services-grid">
+            <!-- Auth Service -->
+            <div class="service-card">
+                <div class="service-icon">🔐</div>
+                <div class="service-name">Auth Service</div>
+                <div class="service-description">User authentication, JWT tokens, MFA, OAuth</div>
+                <div class="endpoint">/api/v1/auth/*</div>
+                <a href="http://localhost:9001/swagger" target="_blank" class="btn">Direct Swagger</a>
+            </div>
+            
+            <!-- Shipment Service -->
+            <div class="service-card">
+                <div class="service-icon">📦</div>
+                <div class="service-name">Shipment Service</div>
+                <div class="service-description">Shipment booking, rate calculation, pickup scheduling</div>
+                <div class="endpoint">/api/v1/shipments/*</div>
+                <a href="http://localhost:9002/swagger" target="_blank" class="btn">Direct Swagger</a>
+            </div>
+            
+            <!-- Tracking Service -->
+            <div class="service-card">
+                <div class="service-icon">📍</div>
+                <div class="service-name">Tracking Service</div>
+                <div class="service-description">Real-time tracking, delivery proof, document management</div>
+                <div class="endpoint">/api/v1/tracking/*</div>
+                <a href="http://localhost:9003/swagger" target="_blank" class="btn">Direct Swagger</a>
+            </div>
+            
+            <!-- Notification Service -->
+            <div class="service-card">
+                <div class="service-icon">📧</div>
+                <div class="service-name">Notification Service</div>
+                <div class="service-description">Email and SMS notifications, templates</div>
+                <div class="endpoint">/api/v1/notifications/*</div>
+                <a href="http://localhost:9004/swagger" target="_blank" class="btn">Direct Swagger</a>
+            </div>
+            
+            <!-- Payment Service -->
+            <div class="service-card">
+                <div class="service-icon">💳</div>
+                <div class="service-name">Payment Service</div>
+                <div class="service-description">Razorpay integration, payment verification, refunds</div>
+                <div class="endpoint">/api/v1/payments/*</div>
+                <a href="http://localhost:9005/swagger" target="_blank" class="btn">Direct Swagger</a>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h2>🔧 Gateway Endpoints</h2>
+            <div class="endpoint">GET /health - Health check endpoint</div>
+            <div class="endpoint">GET /metrics - Prometheus metrics</div>
+        </div>
+        
+        <div class="info-box">
+            <h2>📚 How to Use</h2>
+            <p><strong>Option 1: Through Gateway (Recommended for Production)</strong></p>
+            <div class="endpoint">curl http://localhost:8000/api/v1/auth/login</div>
+            <p style="margin-top: 10px;"><strong>Option 2: Direct to Service (Development Only)</strong></p>
+            <div class="endpoint">curl http://localhost:9001/api/v1/auth/login</div>
+            <p style="margin-top: 15px; color: #666;">
+                <strong>Note:</strong> In production, only the gateway should be exposed. 
+                Direct service access should be blocked by firewall rules.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
